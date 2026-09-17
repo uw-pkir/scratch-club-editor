@@ -150,7 +150,10 @@ export default [
             />
         ),
         featured: true,
-        internetConnectionRequired: true
+        internetConnectionRequired: true,
+        // Greyed out pending a decision on calling Scratch's synthesis-service directly from a
+        // self-hosted deployment. Remove this line once that's resolved.
+        disabled: true
     },
     {
         name: (
@@ -172,7 +175,10 @@ export default [
             />
         ),
         featured: true,
-        internetConnectionRequired: true
+        internetConnectionRequired: true,
+        // Greyed out pending a decision on calling Scratch's translate-service directly from a
+        // self-hosted deployment. Remove this line once that's resolved.
+        disabled: true
     },
     {
         name: 'Makey Makey',

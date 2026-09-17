@@ -167,6 +167,7 @@ const buildConfig = baseConfig.clone()
         entry: {
             gui: './src/playground/index.jsx',
             guistandalone: './src/playground/standalone.jsx',
+            scratchclub: './src/playground/scratch-club-editor.jsx',
             blocksonly: './src/playground/blocks-only.jsx',
             compatibilitytesting: './src/playground/compatibility-testing.jsx',
             player: './src/playground/player.jsx'
@@ -193,6 +194,13 @@ const buildConfig = baseConfig.clone()
         filename: 'standalone.html',
         template: 'src/playground/index.ejs',
         title: 'Scratch 3.0 GUI: Standalone Mode'
+    }))
+    .addPlugin(new HtmlWebpackPlugin({
+        ...commonHtmlWebpackPluginOptions,
+        chunks: ['scratchclub'],
+        filename: 'scratch-club-editor.html',
+        template: 'src/playground/index.ejs',
+        title: 'Scratch Club Editor'
     }))
     .addPlugin(new HtmlWebpackPlugin({
         ...commonHtmlWebpackPluginOptions,
