@@ -180,6 +180,20 @@ const buildConfig = baseConfig.clone()
             // would be looked for at the root of the filesystem, which is incorrect.
             // Hence, we're resetting the public path to be relative.
             publicPath: ''
+        },
+        resolve: {
+            // Swaps the Scratch wordmark for a neutral mark, since this build isn't affiliated
+            // with or endorsed by the Scratch Foundation. Aliasing the asset file (rather than
+            // editing menu-bar.jsx, which imports it) keeps this a no-touch change against
+            // upstream — a rename of the source file is the only future upstream change this
+            // could conflict with, and that would just be a clear build error to fix, not a
+            // silent breakage. Scoped to this build only, not the published scratch-gui library.
+            alias: {
+                [path.resolve(__dirname, 'src/components/menu-bar/scratch-logo.svg')]:
+                    path.resolve(__dirname, 'src/lib/assets/club-logo.svg'),
+                [path.resolve(__dirname, 'src/components/menu-bar/scratch-logo-android.svg')]:
+                    path.resolve(__dirname, 'src/lib/assets/club-logo.svg')
+            }
         }
     })
     .addPlugin(new HtmlWebpackPlugin({
