@@ -168,6 +168,8 @@ const buildConfig = baseConfig.clone()
             gui: './src/playground/index.jsx',
             guistandalone: './src/playground/standalone.jsx',
             scratchclub: './src/playground/scratch-club-editor.jsx',
+            scratchclubplayer: './src/playground/scratch-club-player.jsx',
+            scratchclubslideshow: './src/playground/scratch-club-slideshow.jsx',
             blocksonly: './src/playground/blocks-only.jsx',
             compatibilitytesting: './src/playground/compatibility-testing.jsx',
             player: './src/playground/player.jsx'
@@ -215,6 +217,20 @@ const buildConfig = baseConfig.clone()
         filename: 'scratch-club-editor.html',
         template: 'src/playground/index.ejs',
         title: 'Scratch Club Editor'
+    }))
+    .addPlugin(new HtmlWebpackPlugin({
+        ...commonHtmlWebpackPluginOptions,
+        chunks: ['scratchclubplayer'],
+        filename: 'scratch-club-player.html',
+        template: 'src/playground/index.ejs',
+        title: 'Scratch Club Gallery Viewer (prototype)'
+    }))
+    .addPlugin(new HtmlWebpackPlugin({
+        ...commonHtmlWebpackPluginOptions,
+        chunks: ['scratchclubslideshow'],
+        filename: 'scratch-club-slideshow.html',
+        template: 'src/playground/index.ejs',
+        title: 'Scratch Club Drive Slideshow'
     }))
     .addPlugin(new HtmlWebpackPlugin({
         ...commonHtmlWebpackPluginOptions,

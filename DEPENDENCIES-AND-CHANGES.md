@@ -46,6 +46,29 @@ name, no account, nothing else identifying) to that Scratch Foundation server to
 translation or spoken-audio result back — the same request a project on the real scratch.mit.edu
 would make.
 
+### Prototype — not committed, not deployed, needs setup before it works
+
+| Service | What it's for | Status |
+|---|---|---|
+| **Google Drive API** (`googleapis.com`) | Powers a standalone "Drive folder slideshow" tool (`scratch-club-slideshow.html`) that lists and plays every `.sb3` file in a public Drive folder, one at a time — a teacher-facing show-and-tell tool, separate from the student editor. | **Prototype, not working yet.** Needs a Google Cloud API key (read-only, no student sign-in involved) pasted into the code before it can talk to Drive at all — see below. Not committed to git yet. |
+
+This tool is deliberately independent of the student editor: it loads each project's file directly
+into the same viewer the editor itself uses, without any of the project-hosting machinery the
+gallery-viewer prototype above needs. Nothing about it touches student devices or the save flow —
+students keep using the existing "Save to your computer" as-is, and a teacher separately puts
+those files in a shared Drive folder.
+
+**To make this actually work, you'll need to, one time:**
+1. Create a Google Cloud project (free) at [console.cloud.google.com](https://console.cloud.google.com).
+2. Enable the "Google Drive API" for that project.
+3. Create an API key, and restrict it to only the Drive API (and ideally to the domain this ends
+   up hosted on) so it can't be misused if it ever leaks.
+4. Hand that key over so it can be added to the slideshow tool's code.
+
+No student, teacher, or Google sign-in is ever required to use the tool once this is set up — the
+API key only allows reading whatever a Drive folder's owner has already marked "Anyone with the
+link can view," the same permission level the shared link itself already grants.
+
 ## Choices we made (not exactly "risks," but worth knowing)
 
 - **Kept the built-in Scratch art library pointed at Scratch's own servers** instead of copying
@@ -71,6 +94,8 @@ in. See `AGENTS.md`'s "npm workflow" section for the technical mechanics.
 | Logo swap | The Scratch cat wordmark (top left) is replaced with a plain, neutral geometric mark. Done via a webpack "alias" that swaps the image file, without editing Scratch's own menu bar code at all — so this can't create a merge conflict when pulling in future Scratch updates, at most a future Scratch rename of that exact file would need the alias path updated (a build error you'd notice immediately, not a silent break). One known small gap: the button's screen-reader label still says "Scratch" internally, since that text is hardcoded in Scratch's own file rather than tied to the image — left as-is to keep this a genuine no-touch change. | You asked to remove Scratch branding, since this deployment isn't affiliated with or endorsed by the Scratch Foundation. |
 | Custom asset library (`custom-asset-library.js`) | On startup, the editor fetches your class's sprite/costume/backdrop/sound files from `scratch-club-assets` (via jsDelivr, see above) and adds them into the normal "Choose a Sprite/Costume/Backdrop/Sound" pickers, alongside Scratch's own built-in art. | So you can add your own class art without editing any code — see that repo's README. |
 | Added dependency: `js-md5` | A small, standard library used only to generate internal ID numbers for custom assets. Does not make any network requests itself. | Required by how Scratch's own project format validates data — technical detail, not user-facing. |
+| **Prototype, uncommitted:** `scratch-club-player.html` | A read-only project viewer proving that Scratch's own "player" view can show a project hosted somewhere other than Scratch's own servers. Confirmed working against a test project on 2026-09-17. | Groundwork for a possible future project gallery — not wired up to anything real yet. |
+| **Prototype, uncommitted:** `scratch-club-slideshow.html` | The Drive-folder slideshow tool described above. UI and error handling confirmed working; actually talking to Drive needs the API key setup above. | A lower-effort alternative to a full gallery/moderation system, kept deliberately separate from the student editor. |
 | `.claude/launch.json` | Local development configuration (how to preview the site on this machine). Not part of the deployed site. | Developer convenience only. |
 
 ## Changes made from a blank repo (`scratch-club-assets`)
