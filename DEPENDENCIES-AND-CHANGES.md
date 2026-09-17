@@ -46,11 +46,11 @@ name, no account, nothing else identifying) to that Scratch Foundation server to
 translation or spoken-audio result back — the same request a project on the real scratch.mit.edu
 would make.
 
-### Prototype — not committed, not deployed, needs setup before it works
+### Prototype — working, but not yet deployed to the real site
 
 | Service | What it's for | Status |
 |---|---|---|
-| **Google Drive API** (`googleapis.com`) | Powers a standalone "Drive folder slideshow" tool (`scratch-club-slideshow.html`) that lists and plays every `.sb3` file in a public Drive folder, one at a time — a teacher-facing show-and-tell tool, separate from the student editor. | **Prototype, not working yet.** Needs a Google Cloud API key (read-only, no student sign-in involved) pasted into the code before it can talk to Drive at all — see below. Not committed to git yet. |
+| **Google Drive API** (`googleapis.com`) | Powers a standalone "Drive folder slideshow" tool (`scratch-club-slideshow.html`) that lists and plays every `.sb3` file in a public Drive folder, one at a time — a teacher-facing show-and-tell tool, separate from the student editor. | **Confirmed working end-to-end on 2026-09-17** against a real public folder with 3 real projects (including one using Face Sensing) — folder listing, loading, and Prev/Next all verified. Needs a Google Cloud API key (read-only, no student sign-in involved) — one exists and works, kept in a local, gitignored `.env.local` file rather than committed. Not yet part of the deployed site. |
 
 This tool is deliberately independent of the student editor: it loads each project's file directly
 into the same viewer the editor itself uses, without any of the project-hosting machinery the
@@ -95,7 +95,7 @@ in. See `AGENTS.md`'s "npm workflow" section for the technical mechanics.
 | Custom asset library (`custom-asset-library.js`) | On startup, the editor fetches your class's sprite/costume/backdrop/sound files from `scratch-club-assets` (via jsDelivr, see above) and adds them into the normal "Choose a Sprite/Costume/Backdrop/Sound" pickers, alongside Scratch's own built-in art. | So you can add your own class art without editing any code — see that repo's README. |
 | Added dependency: `js-md5` | A small, standard library used only to generate internal ID numbers for custom assets. Does not make any network requests itself. | Required by how Scratch's own project format validates data — technical detail, not user-facing. |
 | **Prototype, uncommitted:** `scratch-club-player.html` | A read-only project viewer proving that Scratch's own "player" view can show a project hosted somewhere other than Scratch's own servers. Confirmed working against a test project on 2026-09-17. | Groundwork for a possible future project gallery — not wired up to anything real yet. |
-| **Prototype, uncommitted:** `scratch-club-slideshow.html` | The Drive-folder slideshow tool described above. UI and error handling confirmed working; actually talking to Drive needs the API key setup above. | A lower-effort alternative to a full gallery/moderation system, kept deliberately separate from the student editor. |
+| `scratch-club-slideshow.html` | The Drive-folder slideshow tool described above. Fully working as of 2026-09-17 — folder listing, project loading, and Prev/Next all confirmed against real data. Green Flag is not auto-run on load (removed after it proved unreliable — raced ahead of async asset setup); the teacher clicks it per project, same as stock "Load from your computer" already requires. | A lower-effort alternative to a full gallery/moderation system, kept deliberately separate from the student editor. |
 | `.claude/launch.json` | Local development configuration (how to preview the site on this machine). Not part of the deployed site. | Developer convenience only. |
 
 ## Changes made from a blank repo (`scratch-club-assets`)

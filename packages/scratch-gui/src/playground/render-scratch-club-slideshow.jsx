@@ -5,10 +5,11 @@ import AppStateHOC from '../lib/app-state-hoc.jsx';
 import GUI from '../containers/gui.jsx';
 import {parseFolderId, listSb3Files, fetchProjectBytes} from '../lib/google-drive-slideshow.js';
 
-// Fill this in with a Google API key that has the Drive API enabled and is restricted to it.
-// See DEPENDENCIES-AND-CHANGES.md for setup steps. Left blank, every folder load will fail with
+// Supplied at build time via the GOOGLE_DRIVE_API_KEY env var (see webpack.config.js's
+// DefinePlugin block) rather than hardcoded here, so the key isn't sitting in git history.
+// See DEPENDENCIES-AND-CHANGES.md for setup steps. Left unset, every folder load will fail with
 // a clear on-screen error rather than a confusing generic one.
-const GOOGLE_API_KEY = '';
+const GOOGLE_API_KEY = process.env.GOOGLE_DRIVE_API_KEY;
 
 const WrappedGui = AppStateHOC(GUI);
 
@@ -31,8 +32,13 @@ const SlideshowApp = () => {
         try {
             const bytes = await fetchProjectBytes(file.id, GOOGLE_API_KEY);
             const vm = guiRef.current.appState.store.getState().scratchGui.vm;
+            // Deliberately not auto-running Green Flag here (unlike an earlier version of this
+            // code) — calling it immediately after loadProject() resolves raced ahead of some
+            // async asset setup that isn't part of that promise, so scripts referencing not-yet-
+            // ready costumes/backdrops silently no-opped. Matches stock "Load from your computer"
+            // behavior anyway, which also never auto-runs — the teacher clicks Green Flag same as
+            // any other load.
             await vm.loadProject(bytes);
-            vm.greenFlag();
             setStatus('idle');
         } catch (err) {
             setStatus('error');

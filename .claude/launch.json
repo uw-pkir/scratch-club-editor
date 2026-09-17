@@ -4,7 +4,7 @@
     {
       "name": "scratch-gui-dev",
       "runtimeExecutable": "C:\\Program Files\\Git\\bin\\bash.exe",
-      "runtimeArgs": ["-lc", "export PATH=\"/c/Users/kirschmann/AppData/Local/Programs/node-v24.21.0-win-x64:$PATH\"; cd packages/scratch-gui; npm run start"],
+      "runtimeArgs": ["-lc", "export PATH=\"/c/Users/kirschmann/AppData/Local/Programs/node-v24.21.0-win-x64:$PATH\"; [ -f .env.local ] && set -a && . ./.env.local && set +a; cd packages/scratch-gui; npm run start"],
       "port": 8601
     }
   ]
