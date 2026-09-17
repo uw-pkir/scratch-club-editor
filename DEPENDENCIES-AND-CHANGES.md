@@ -51,10 +51,12 @@ would make.
 - **Kept the built-in Scratch art library pointed at Scratch's own servers** instead of copying
   it to our own hosting. Simpler to set up and maintain, at the cost of the small dependency
   above. Revisit if a fully offline/walled-off deployment ever becomes a hard requirement.
-- **Custom class library changes aren't instant.** Because of how jsDelivr caches things, a
-  newly-added sprite/costume/sound can take a while (sometimes longer than a few minutes even
-  right after publishing) to actually appear for students. Plan additions ahead of when a class
-  needs them. Full details in `scratch-club-assets`'s own README.
+- **Custom class library changes aren't instant — and can be slow.** Because of how jsDelivr
+  caches things, a newly-added sprite/costume/sound can take a while to actually appear for
+  students. In testing on 2026-09-17, a new file took **over an hour** to show up, even after
+  using jsDelivr's own "purge" tool. Plan additions at least a day ahead of when a class needs
+  them, not the same morning. Full details in `scratch-club-assets`'s own README, and in
+  `QA-COMPLIANCE-REVIEW.md`'s issue #1.
 
 ## Changes made from stock Scratch (this repo)
 
